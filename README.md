@@ -138,3 +138,9 @@ go test -race ./...
 go vet ./...
 go build -o bin/light-server .
 ```
+
+## 配布版とGitHub Actions
+
+[Releases](https://github.com/olduvai-jp/light-server/releases) からmacOS arm64・Linux amd64/arm64・Windows amd64/arm64向けアーカイブを取得できます。展開した `light-server` を実行してください。`checksums.txt` にSHA-256を掲載します。Windows版はzip、それ以外はtar.gzです。
+
+mainへのpush・PRでテスト、race検査、vet、5種類のビルドを実行し、Actionsのartifactに保存します。`v0.1.0` のようなタグをpushすると、成功したビルドからGitHub Releaseを自動公開します。手動ビルドはworkflow_dispatchでも実行できます。

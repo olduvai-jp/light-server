@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"sync"
-	"syscall"
 )
 
 var validName = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$`)
@@ -44,7 +44,7 @@ func NewServer(root string) (*Server, error) {
 	if e != nil {
 		return nil, e
 	}
-	if e = syscall.Flock(int(l.Fd()), syscall.LOCK_EX|syscall.LOCK_NB); e != nil {
+	if e = lockFile(l); e != nil {
 		l.Close()
 		return nil, fmt.Errorf("保存先は別プロセスが使用中: %w", e)
 	}
@@ -131,14 +131,14 @@ func (s *Server) Close() error {
 		}
 	}
 	if s.lock != nil {
-		syscall.Flock(int(s.lock.Fd()), syscall.LOCK_UN)
+		unlockFile(s.lock)
 		return s.lock.Close()
 	}
 	return nil
 }
 func within(parent, child string) bool {
 	r, e := filepath.Rel(parent, child)
-	return e == nil && r != ".." && !filepath.IsAbs(r) && !(len(r) > 3 && r[:3] == "../")
+	return e == nil && r != ".." && !filepath.IsAbs(r) && !strings.HasPrefix(r, ".."+string(filepath.Separator))
 }
 
 // acquire protects project lifetime, without holding the registry during I/O.
