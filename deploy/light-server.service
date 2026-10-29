@@ -1,0 +1,14 @@
+[Unit]
+Description=light-server static and project data server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/light-server serve --addr 127.0.0.1:8787 --data %h/.local/share/light-server
+Restart=on-failure
+RestartSec=2
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

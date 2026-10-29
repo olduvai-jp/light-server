@@ -1,0 +1,5 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><title>light-server</title><h1>light-server</h1><p>このページは常駐サーバーから配信されています。</p><button id="save">メモを保存</button><input id="memo" placeholder="メモ"><pre id="result"></pre><script>
+const api='/api/projects/demo/collections/notes/objects/current';
+document.querySelector('#save').onclick=async()=>{const r=await fetch(api,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({memo:document.querySelector('#memo').value})});document.querySelector('#result').textContent=JSON.stringify(await r.json(),null,2)};
+fetch(api).then(async r=>{if(r.ok){const x=await r.json();document.querySelector('#memo').value=x.data.memo||'';document.querySelector('#result').textContent=JSON.stringify(x,null,2)}});
+</script></html>
