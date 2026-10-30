@@ -144,3 +144,9 @@ go build -o bin/light-server .
 [Releases](https://github.com/olduvai-jp/light-server/releases) からmacOS arm64・Linux amd64/arm64・Windows amd64/arm64向けアーカイブを取得できます。展開した `light-server` を実行してください。`checksums.txt` にSHA-256を掲載します。Windows版はzip、それ以外はtar.gzです。
 
 mainへのpush・PRでテスト、race検査、vet、5種類のビルドを実行し、Actionsのartifactに保存します。`v0.1.0` のようなタグをpushすると、成功したビルドからGitHub Releaseを自動公開します。手動ビルドはworkflow_dispatchでも実行できます。
+
+## エージェント用スキル
+
+[skills/light-server/SKILL.md](skills/light-server/SKILL.md) をGitで管理しています。成果物の登録・閲覧URLの案内、JSON CRUD・検索、バイナリ送受信に使えます。スキルフォルダ単体で利用できます。
+
+Codexのskill-installerにはリポジトリ `olduvai-jp/light-server` とパス `skills/light-server` を指定してください。手動の場合は、このフォルダを `~/.codex/skills/light-server` にコピーします。サーバー本体は別途インストールし、稼働させておきます。
